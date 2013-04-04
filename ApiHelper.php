@@ -4,7 +4,7 @@ abstract class AbstractApi {
 
     public $name;
 
-	abstract function getUpdate();
+    abstract function getUpdate();
     abstract function getData();
 
     protected function getJson() {
@@ -35,11 +35,11 @@ abstract class AbstractApi {
 
 class Weather extends AbstractApi {
 	
-	public $name;
-	private $key;
-	private $format;
-	private $city;
-	private $url;
+    public $name;
+    private $key;
+    private $format;
+    private $city;
+    private $url;
 
     public function __construct() {
         $this->key = ""; // key form http://api.worldweatheronline.com
@@ -53,11 +53,11 @@ class Weather extends AbstractApi {
         );
     }
 
-	public function getUpdate() {
+    public function getUpdate() {
         if (!HttpHelper::checkUrl($this->url))
             return false;
 		return file_get_contents($this->url);
-	}
+    }
 
     public function getData(){
         if($this->format == "json") {
@@ -90,18 +90,17 @@ class Currency extends AbstractApi {
     }
 
 
-	public function getUpdate() {
+    public function getUpdate() {
         if (!HttpHelper::checkUrl($this->url))
             return false;
 
-		$content = file_get_contents($this->url);
-		$xml = simplexml_load_string($content);
-
-		$currency['USD'] = round((float)str_replace(",", ".", $xml->Valute[9]->Value), 2);
-		$currency['EUR'] = round((float) str_replace(",", ".", $xml->Valute[10]->Value), 2);
-		
-		return json_encode($currency);
-	}
+        $content = file_get_contents($this->url);
+	$xml = simplexml_load_string($content);
+	$currency['USD'] = round((float)str_replace(",", ".", $xml->Valute[9]->Value), 2);
+	$currency['EUR'] = round((float) str_replace(",", ".", $xml->Valute[10]->Value), 2);
+	return json_encode($currency);
+	
+    }
 
     public function getData(){
         if (!empty($this)) {
